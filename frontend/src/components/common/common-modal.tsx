@@ -9,6 +9,7 @@ type CommonModalProps = {
   title: string;
   description?: string;
   children: React.ReactNode;
+  contentClassName?: string;
 };
 
 export const CommonModal = ({
@@ -16,14 +17,16 @@ export const CommonModal = ({
   onOpenChange,
   title,
   description,
-  children
+  children,
+  contentClassName
 }: CommonModalProps) => (
   <Dialog.Root open={open} onOpenChange={onOpenChange}>
     <Dialog.Portal>
       <Dialog.Overlay className="fixed inset-0 z-40 bg-black/40" />
       <Dialog.Content
         className={cn(
-          "fixed left-1/2 top-1/2 z-50 w-[95vw] max-w-xl -translate-x-1/2 -translate-y-1/2 rounded-xl border bg-white p-5 shadow-xl"
+          "fixed left-1/2 top-1/2 z-50 w-[95vw] max-w-xl -translate-x-1/2 -translate-y-1/2 rounded-[28px] bg-white/95 p-5 shadow-[0_25px_55px_rgba(0,0,0,0.3)] backdrop-blur-md",
+          contentClassName
         )}
       >
         <div className="mb-4 flex items-start justify-between">

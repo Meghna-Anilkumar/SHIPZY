@@ -27,13 +27,13 @@ export const OrderTracker = ({ orderId }: OrderTrackerProps) => {
   const progress = ((currentStep + 1) / STATUS_FLOW.length) * 100;
 
   return (
-    <Card className="overflow-hidden border-[#e7d5c4] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+    <Card className="overflow-hidden bg-gradient-to-br from-[#fffaf4] to-[#ffeedc]">
       <CardHeader>
-        <CardTitle>Order Tracking</CardTitle>
+        <CardTitle className="text-[#2b1d15]">Order Tracking</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <p className="text-sm text-[#7a5a3f]">Order ID: {data.id}</p>
-        <div className="rounded-lg border bg-slate-50 p-3">
+        <p className="text-sm text-[#7a5a3f]">Live Order: #{data.id.slice(-6).toUpperCase()}</p>
+        <div className="rounded-2xl bg-white p-3 shadow-sm">
           <p className="text-xs uppercase tracking-wide text-[#7a5a3f]">Current status</p>
           <div className="mt-2">
             <StatusBadge status={data.status} />
@@ -49,8 +49,8 @@ export const OrderTracker = ({ orderId }: OrderTrackerProps) => {
               return (
                 <p
                   key={status}
-                  className={`rounded-md border px-2 py-1 text-center text-xs ${
-                    isComplete ? STATUS_STYLES[status] : "border-slate-200 bg-white text-slate-500"
+                  className={`rounded-xl px-2 py-1 text-center text-xs shadow-sm ${
+                    isComplete ? STATUS_STYLES[status] : "bg-white text-slate-500"
                   }`}
                 >
                   {status}

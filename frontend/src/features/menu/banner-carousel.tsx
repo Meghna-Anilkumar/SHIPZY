@@ -1,3 +1,4 @@
+// src/features/menu/banner-carousel.tsx
 import { useEffect, useState } from "react";
 import { Flame, Leaf, Sparkles } from "lucide-react";
 import { HOME_BANNERS } from "@/models/banner.model";
@@ -5,7 +6,7 @@ import { HOME_BANNERS } from "@/models/banner.model";
 const THEME_ICON = {
   spicy: Flame,
   healthy: Leaf,
-  dessert: Sparkles
+  dessert: Sparkles,
 } as const;
 
 export const BannerCarousel = () => {
@@ -15,53 +16,65 @@ export const BannerCarousel = () => {
     const interval = window.setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % HOME_BANNERS.length);
     }, 3200);
-
     return () => window.clearInterval(interval);
   }, []);
 
   return (
-    <section className="relative overflow-hidden rounded-2xl border border-[#f0d8c2] bg-white p-1 shadow-[0_12px_30px_rgba(53,28,11,0.14)]">
+    <section className="relative h-[480px] overflow-hidden rounded-3xl border border-[#e8d2bc] bg-gradient-to-br from-[#2b1d15] via-[#3c2a20] to-[#2b1d15] p-1 shadow-2xl md:h-[560px]">
       {HOME_BANNERS.map((slide, index) => {
         const ThemeIcon = THEME_ICON[slide.theme];
         return (
           <div
             key={slide.id}
-            className={`overflow-hidden rounded-xl transition-all duration-700 ${
-              index === activeIndex ? "relative opacity-100" : "absolute inset-1 opacity-0"
+            className={`absolute inset-0 rounded-3xl transition-all duration-1000 ease-out ${
+              index === activeIndex ? "opacity-100 scale-100" : "opacity-0 scale-95"
             }`}
           >
-            <div className="relative h-[320px] bg-[#2b1d15] md:h-[420px]">
+            <div className="relative h-full overflow-hidden">
               <img
                 src={slide.imageUrl}
                 alt={slide.title}
-                className="animate-banner-zoom absolute inset-0 h-full w-full object-cover object-center"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700"
               />
-              <div className="flex h-full items-end justify-between gap-3 bg-gradient-to-r from-black/65 via-black/40 to-black/10 p-5 text-white md:p-7">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.15em] text-white/85">Limited Time Offer</p>
-                  <h2 className="mt-1 text-2xl font-bold md:text-4xl">{slide.title}</h2>
-                  <p className="mt-2 max-w-xl text-sm text-white/90 md:text-base">{slide.caption}</p>
-                  <p className="mt-3 inline-flex rounded-full bg-[#f28705] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
-                    {slide.offer}
-                  </p>
+
+              {/* Unified Dark Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/50 to-black/30" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
+
+              <div className="absolute bottom-0 left-0 right-0 flex h-full items-end p-8 md:p-12 text-white">
+                <div className="max-w-2xl">
+                  <p className="text-sm uppercase tracking-[3px] text-orange-400">🔥 LIMITED TIME • TODAY ONLY</p>
+                  <h1 className="mt-3 text-4xl font-bold leading-none tracking-tighter md:text-6xl">
+                    {slide.title}
+                  </h1>
+                  <p className="mt-4 max-w-md text-lg text-white/90">{slide.caption}</p>
+
+                  <div className="mt-6 flex items-center gap-4">
+                    <button className="rounded-full bg-[#f28705] px-8 py-3.5 font-semibold text-white transition-all hover:bg-[#e07600] active:scale-95">
+                      Order Now →
+                    </button>
+                    <p className="text-3xl font-bold text-white">{slide.offer}</p>
+                  </div>
                 </div>
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/20">
-                  <ThemeIcon size={22} />
-                </span>
+
+                <div className="ml-auto hidden h-20 w-20 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-md md:flex">
+                  <ThemeIcon size={42} />
+                </div>
               </div>
             </div>
           </div>
         );
       })}
 
-      <div className="mt-3 flex justify-center gap-2 pb-1">
-        {HOME_BANNERS.map((slide, index) => (
+      {/* Dots */}
+      <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+        {HOME_BANNERS.map((_, i) => (
           <button
-            key={slide.id}
-            type="button"
-            aria-label={`Show banner ${index + 1}`}
-            className={`h-2.5 rounded-full transition-all ${index === activeIndex ? "w-8 bg-[#f28705]" : "w-2.5 bg-[#d5b79b]"}`}
-            onClick={() => setActiveIndex(index)}
+            key={i}
+            onClick={() => setActiveIndex(i)}
+            className={`h-2.5 rounded-full transition-all duration-300 ${
+              i === activeIndex ? "w-12 bg-white" : "w-2.5 bg-white/50 hover:bg-white/70"
+            }`}
           />
         ))}
       </div>
