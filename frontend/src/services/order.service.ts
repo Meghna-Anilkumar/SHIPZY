@@ -1,6 +1,7 @@
 import { apiClient } from "@/lib/api-client";
-import type { ApiResponse } from "@/types/api";
-import type { CreateOrderRequest, Order, OrderStatus } from "@/types/order";
+import type { ApiResponse } from "@/interfaces/api.interface";
+import type { CreateOrderRequest, Order } from "@/interfaces/order.interface";
+import type { OrderStatus } from "@/types/order";
 
 export class OrderService {
   static async getOrders(): Promise<Order[]> {

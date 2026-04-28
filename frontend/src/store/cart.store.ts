@@ -1,18 +1,18 @@
 import { create } from "zustand";
-import type { MenuItem } from "@/types/menu";
+import type { MenuItem } from "@/interfaces/menu.interface";
 
-export interface CartItem extends MenuItem {
+export type CartItem = MenuItem & {
   quantity: number;
-}
+};
 
-interface CartStore {
+type CartStore = {
   items: CartItem[];
   addToCart: (item: MenuItem) => void;
   incrementQty: (itemId: string) => void;
   decrementQty: (itemId: string) => void;
   removeItem: (itemId: string) => void;
   clearCart: () => void;
-}
+};
 
 export const useCartStore = create<CartStore>((set) => ({
   items: [],

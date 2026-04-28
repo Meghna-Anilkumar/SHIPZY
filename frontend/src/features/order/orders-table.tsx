@@ -1,14 +1,11 @@
 import { useMemo, useState } from "react";
-import { Eye } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Pagination } from "@/components/common/pagination";
 import { LoadingState } from "@/components/common/loading-state";
 import { ErrorState } from "@/components/common/error-state";
 import { StatusBadge } from "@/components/common/status-badge";
 import { useOrdersQuery } from "@/hooks/use-orders-query";
-import type { Order } from "@/types/order";
+import type { Order } from "@/interfaces/order.interface";
 
 const PAGE_SIZE = 5;
 
@@ -22,29 +19,15 @@ const statusToFilter = (status: Order["status"]): "all" | "pending" | "shipped" 
   return "pending";
 };
 
-interface OrdersTableProps {
-  onViewOrder: (order: Order) => void;
-}
-
-export const OrdersTable = ({ onViewOrder }: OrdersTableProps) => {
+export const OrdersTable = () => {
   const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "shipped" | "delivered" | "cancelled">("all");
-  const [query, setQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading, isError, error, refetch } = useOrdersQuery();
 
   const filteredOrders = useMemo(() => {
     const orders = data ?? [];
-    return orders.filter((order) => {
-      const matchesFilter = statusFilter === "all" ? true : statusToFilter(order.status) === statusFilter;
-      const normalizedQuery = query.trim().toLowerCase();
-      const matchesQuery =
-        normalizedQuery.length === 0 ||
-        order.id.toLowerCase().includes(normalizedQuery) ||
-        order.deliveryDetails.name.toLowerCase().includes(normalizedQuery);
-
-      return matchesFilter && matchesQuery;
-    });
-  }, [data, query, statusFilter]);
+    return orders.filter((order) => (statusFilter === "all" ? true : statusToFilter(order.status) === statusFilter));
+  }, [data, statusFilter]);
 
   const paginatedData = useMemo(() => {
     const totalPages = Math.max(1, Math.ceil(filteredOrders.length / PAGE_SIZE));
@@ -68,15 +51,6 @@ export const OrdersTable = ({ onViewOrder }: OrdersTableProps) => {
       <CardHeader className="gap-3 md:flex-row md:items-center md:justify-between">
         <CardTitle className="text-[#2b1d15]">Order History</CardTitle>
         <div className="flex w-full flex-col gap-2 md:w-auto md:flex-row">
-          <Input
-            value={query}
-            onChange={(event) => {
-              setQuery(event.target.value);
-              setCurrentPage(1);
-            }}
-            placeholder="Search by Order ID or customer"
-            className="md:w-72"
-          />
           <select
             value={statusFilter}
             onChange={(event) => {
@@ -96,38 +70,40 @@ export const OrdersTable = ({ onViewOrder }: OrdersTableProps) => {
       <CardContent className="space-y-4">
         {filteredOrders.length === 0 ? (
           <div className="rounded-xl border border-dashed border-[#e5c8ad] bg-[#fff7ef] p-6 text-center">
-            <p className="text-lg font-semibold text-[#7a4a1f]">No matching orders yet</p>
-            <p className="mt-1 text-sm text-[#9e6f44]">Try changing filters or place a fresh order from the menu.</p>
+            <p className="text-lg font-semibold text-[#7a4a1f]">No orders in this status yet</p>
+            <p className="mt-1 text-sm text-[#9e6f44]">Place your next meal from the menu and it will appear here.</p>
           </div>
         ) : (
           <>
             <div className="overflow-x-auto rounded-lg border border-[#f0dfce]">
-              <table className="w-full min-w-[760px] text-sm">
+              <table className="w-full min-w-[700px] text-sm">
                 <thead className="bg-[#fff3e8] text-left text-[#7a4a1f]">
                   <tr>
-                    <th className="px-4 py-3">Order ID</th>
-                    <th className="px-4 py-3">Customer</th>
-                    <th className="px-4 py-3">Items</th>
+                    <th className="px-4 py-3">Ordered On</th>
+                    <th className="px-4 py-3">Your Items</th>
                     <th className="px-4 py-3">Total</th>
                     <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3">Action</th>
+                    <th className="px-4 py-3">Delivery To</th>
                   </tr>
                 </thead>
                 <tbody>
                   {paginatedData.rows.map((order) => (
                     <tr key={order.id} className="border-t border-[#f5e8db] transition hover:bg-[#fffbf7]">
-                      <td className="px-4 py-3 font-medium text-[#2b1d15]">{order.id.slice(-8)}</td>
-                      <td className="px-4 py-3 text-[#6f4b2a]">{order.deliveryDetails.name}</td>
-                      <td className="px-4 py-3 text-[#6f4b2a]">{order.items.length}</td>
+                      <td className="px-4 py-3 font-medium text-[#2b1d15]">
+                        {new Date(order.createdAt).toLocaleDateString("en-IN", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric"
+                        })}
+                      </td>
+                      <td className="px-4 py-3 text-[#6f4b2a]">
+                        {order.items[0]?.name ?? "Meal"} {order.items.length > 1 ? `+${order.items.length - 1} more` : ""}
+                      </td>
                       <td className="px-4 py-3 text-[#2b1d15]">Rs. {order.totalAmount}</td>
                       <td className="px-4 py-3">
                         <StatusBadge status={order.status} />
                       </td>
-                      <td className="px-4 py-3">
-                        <Button variant="outline" size="sm" onClick={() => onViewOrder(order)}>
-                          <Eye size={14} /> View
-                        </Button>
-                      </td>
+                      <td className="px-4 py-3 text-[#6f4b2a]">{order.deliveryDetails.address}</td>
                     </tr>
                   ))}
                 </tbody>

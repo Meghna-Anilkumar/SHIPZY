@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 
-interface ErrorStateProps {
+type ErrorStateProps = {
   message: string;
   onRetry?: () => void;
-}
+};
 
 export const ErrorState = ({ message, onRetry }: ErrorStateProps) => (
   <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-red-700 shadow-sm">

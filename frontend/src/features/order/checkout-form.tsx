@@ -6,10 +6,10 @@ import { Textarea } from "@/components/ui/textarea";
 import type { CheckoutFormValues } from "@/validations/checkout.schema";
 import { checkoutSchema } from "@/validations/checkout.schema";
 
-interface CheckoutFormProps {
+type CheckoutFormProps = {
   onSubmit: (values: CheckoutFormValues) => void;
   isSubmitting: boolean;
-}
+};
 
 export const CheckoutForm = ({ onSubmit, isSubmitting }: CheckoutFormProps) => {
   const form = useForm<CheckoutFormValues>({

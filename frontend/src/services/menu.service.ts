@@ -1,6 +1,6 @@
 import { apiClient } from "@/lib/api-client";
-import type { ApiResponse } from "@/types/api";
-import type { MenuItem } from "@/types/menu";
+import type { ApiResponse } from "@/interfaces/api.interface";
+import type { MenuItem } from "@/interfaces/menu.interface";
 
 export class MenuService {
   static async getMenu(): Promise<MenuItem[]> {

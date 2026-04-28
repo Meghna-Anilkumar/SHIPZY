@@ -59,6 +59,15 @@ body {
   }
 }
 
+@keyframes banner-zoom {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.06);
+  }
+}
+
 .animate-subtle-pop {
   animation: subtle-pop 0.4s ease-out;
 }
@@ -69,4 +78,8 @@ body {
 
 .animate-slide-up-fade {
   animation: slide-up-fade 0.35s ease-out;
+}
+
+.animate-banner-zoom {
+  animation: banner-zoom 3.2s ease-in-out forwards;
 }

@@ -3,9 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useOrderStatusQuery } from "@/hooks/use-order-status-query";
 import type { OrderStatus } from "@/types/order";
 
-interface OrderTrackerProps {
+type OrderTrackerProps = {
   orderId: string | null;
-}
+};
 
 const STATUS_FLOW: OrderStatus[] = ["Order Received", "Preparing", "Out for Delivery", "Delivered"];
 

@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCartStore } from "@/store/cart.store";
 
-interface CartSummaryProps {
+type CartSummaryProps = {
   onCheckout: () => void;
   className?: string;
-}
+};
 
 export const CartSummary = ({ onCheckout, className = "border-[#e7d5c4]" }: CartSummaryProps) => {
   const { items, incrementQty, decrementQty, removeItem } = useCartStore();
