@@ -83,3 +83,18 @@ body {
 .animate-banner-zoom {
   animation: banner-zoom 3.2s ease-in-out forwards;
 }
+
+@keyframes section-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-section-fade {
+  animation: section-fade 0.35s ease-out;
+}

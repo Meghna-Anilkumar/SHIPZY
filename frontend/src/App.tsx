@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Bell, PackageCheck, ShoppingCart, Soup, Truck, UserRound } from "lucide-react";
+import { Bell, PackageCheck, ShoppingCart, Soup, Truck, UserRound, X } from "lucide-react";
 import { CommonModal } from "@/components/common/common-modal";
 import { BannerCarousel } from "@/features/menu/banner-carousel";
 import { MenuList } from "@/features/menu/menu-list";
@@ -69,9 +69,9 @@ const App = () => {
   }, [cartPulse]);
 
   return (
-    <main className="min-h-screen bg-[#f9efe6]">
+    <main className="min-h-screen bg-gradient-to-br from-[#f9efe6] via-[#fff4e8] to-[#f6e9dd] transition-colors duration-500">
       <div className="mx-auto max-w-[1500px] space-y-6 p-4 lg:p-6">
-        <header className="rounded-2xl border border-[#ead9c9] bg-white p-4 shadow-[0_10px_30px_rgba(57,31,13,0.08)]">
+        <header className="rounded-2xl border border-[#ead9c9]/80 bg-white/85 p-4 shadow-[0_10px_30px_rgba(57,31,13,0.08)] backdrop-blur-sm">
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-3 pr-2">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f28705] text-white">
@@ -160,7 +160,7 @@ const App = () => {
           </section>
 
         {activeSection === "menu" ? (
-          <div className={`grid gap-6 ${showRightRail || selectedFood ? "xl:grid-cols-[1.35fr_0.9fr]" : "xl:grid-cols-1"}`}>
+          <div className={`animate-section-fade grid gap-6 ${showRightRail || selectedFood ? "xl:grid-cols-[1.35fr_0.9fr]" : "xl:grid-cols-1"}`}>
             <MenuList
               searchQuery={searchQuery}
               selectedItemId={selectedFood?.id ?? null}
@@ -172,10 +172,20 @@ const App = () => {
             {showRightRail || selectedFood ? (
               <div className="space-y-4">
                 {selectedFood ? (
-                  <Card className="overflow-hidden border-[#e8d2bc]">
+                  <Card className="overflow-hidden border-[#e8d2bc] bg-white/90">
                     <img src={selectedFood.image} alt={selectedFood.name} className="h-48 w-full object-cover object-center" />
                     <CardContent className="space-y-2 p-4">
-                      <p className="text-xs uppercase tracking-wide text-[#9b6b3f]">Selected Dish</p>
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs uppercase tracking-wide text-[#9b6b3f]">Selected Dish</p>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedFood(null)}
+                          className="rounded-md border border-[#e7d5c4] p-1 text-[#8a5a2e] transition hover:bg-[#fff2e4]"
+                          aria-label="Close selected dish details"
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
                       <h3 className="text-xl font-semibold text-[#2b1d15]">{selectedFood.name}</h3>
                       <p className="text-sm text-[#7a5a3f]">{selectedFood.description}</p>
                       <div className="flex items-center justify-between">

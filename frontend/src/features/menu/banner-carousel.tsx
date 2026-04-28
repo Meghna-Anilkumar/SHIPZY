@@ -30,11 +30,11 @@ export const BannerCarousel = () => {
               index === activeIndex ? "relative opacity-100" : "absolute inset-1 opacity-0"
             }`}
           >
-            <div className="relative h-[250px] bg-[#2b1d15] md:h-[300px]">
+            <div className="relative h-[320px] bg-[#2b1d15] md:h-[420px]">
               <img
                 src={slide.imageUrl}
                 alt={slide.title}
-                className="absolute inset-0 h-full w-full object-cover object-center"
+                className="animate-banner-zoom absolute inset-0 h-full w-full object-cover object-center"
               />
               <div className="flex h-full items-end justify-between gap-3 bg-gradient-to-r from-black/65 via-black/40 to-black/10 p-5 text-white md:p-7">
                 <div>

@@ -47,72 +47,75 @@ export const OrdersTable = () => {
   }
 
   return (
-    <Card className="border-[#e7d5c4] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
-      <CardHeader className="gap-3 md:flex-row md:items-center md:justify-between">
-        <CardTitle className="text-[#2b1d15]">Order History</CardTitle>
-        <div className="flex w-full flex-col gap-2 md:w-auto md:flex-row">
-          <select
-            value={statusFilter}
-            onChange={(event) => {
-              setStatusFilter(event.target.value as typeof statusFilter);
-              setCurrentPage(1);
-            }}
-            className="h-10 rounded-md border border-[#d8bca3] bg-white px-3 text-sm text-[#2b1d15] outline-none focus:border-[#f28705]"
-          >
-            <option value="all">All statuses</option>
-            <option value="pending">Pending</option>
-            <option value="shipped">Shipped</option>
-            <option value="delivered">Delivered</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {filteredOrders.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-[#e5c8ad] bg-[#fff7ef] p-6 text-center">
+    <section className="animate-section-fade space-y-4">
+      <Card className="border-[#e7d5c4] bg-white/85 shadow-[0_10px_30px_rgba(0,0,0,0.08)] backdrop-blur-sm">
+        <CardHeader className="gap-3 md:flex-row md:items-center md:justify-between">
+          <CardTitle className="text-[#2b1d15]">Your Orders</CardTitle>
+          <div className="flex w-full flex-col gap-2 md:w-auto md:flex-row">
+            <select
+              value={statusFilter}
+              onChange={(event) => {
+                setStatusFilter(event.target.value as typeof statusFilter);
+                setCurrentPage(1);
+              }}
+              className="h-10 rounded-md border border-[#d8bca3] bg-white px-3 text-sm text-[#2b1d15] outline-none focus:border-[#f28705]"
+            >
+              <option value="all">All statuses</option>
+              <option value="pending">Pending</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+        </CardHeader>
+      </Card>
+
+      {filteredOrders.length === 0 ? (
+        <Card className="border-dashed border-[#e5c8ad] bg-[#fff7ef]/90 text-center">
+          <CardContent className="p-8">
             <p className="text-lg font-semibold text-[#7a4a1f]">No orders in this status yet</p>
             <p className="mt-1 text-sm text-[#9e6f44]">Place your next meal from the menu and it will appear here.</p>
-          </div>
-        ) : (
-          <>
-            <div className="overflow-x-auto rounded-lg border border-[#f0dfce]">
-              <table className="w-full min-w-[700px] text-sm">
-                <thead className="bg-[#fff3e8] text-left text-[#7a4a1f]">
-                  <tr>
-                    <th className="px-4 py-3">Ordered On</th>
-                    <th className="px-4 py-3">Your Items</th>
-                    <th className="px-4 py-3">Total</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3">Delivery To</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {paginatedData.rows.map((order) => (
-                    <tr key={order.id} className="border-t border-[#f5e8db] transition hover:bg-[#fffbf7]">
-                      <td className="px-4 py-3 font-medium text-[#2b1d15]">
-                        {new Date(order.createdAt).toLocaleDateString("en-IN", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric"
-                        })}
-                      </td>
-                      <td className="px-4 py-3 text-[#6f4b2a]">
+          </CardContent>
+        </Card>
+      ) : (
+        <>
+          <div className="grid gap-4">
+            {paginatedData.rows.map((order) => (
+              <Card key={order.id} className="border-[#ecd9c7] bg-white/90 transition hover:-translate-y-0.5 hover:shadow-md">
+                <CardContent className="space-y-3 p-4">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <p className="text-sm font-semibold text-[#2b1d15]">
+                      {new Date(order.createdAt).toLocaleDateString("en-IN", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric"
+                      })}
+                    </p>
+                    <StatusBadge status={order.status} />
+                  </div>
+                  <div className="grid gap-3 md:grid-cols-3">
+                    <div>
+                      <p className="text-xs uppercase text-[#9b6b3f]">Items</p>
+                      <p className="text-sm text-[#5f3b20]">
                         {order.items[0]?.name ?? "Meal"} {order.items.length > 1 ? `+${order.items.length - 1} more` : ""}
-                      </td>
-                      <td className="px-4 py-3 text-[#2b1d15]">Rs. {order.totalAmount}</td>
-                      <td className="px-4 py-3">
-                        <StatusBadge status={order.status} />
-                      </td>
-                      <td className="px-4 py-3 text-[#6f4b2a]">{order.deliveryDetails.address}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <Pagination currentPage={currentPage} totalPages={paginatedData.totalPages} onPageChange={setCurrentPage} />
-          </>
-        )}
-      </CardContent>
-    </Card>
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase text-[#9b6b3f]">Total</p>
+                      <p className="text-sm font-semibold text-[#2b1d15]">Rs. {order.totalAmount}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase text-[#9b6b3f]">Delivery Address</p>
+                      <p className="line-clamp-2 text-sm text-[#5f3b20]">{order.deliveryDetails.address}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <Pagination currentPage={currentPage} totalPages={paginatedData.totalPages} onPageChange={setCurrentPage} />
+        </>
+      )}
+    </section>
   );
 };
