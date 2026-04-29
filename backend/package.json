@@ -6,7 +6,7 @@
  "scripts": {
   "dev": "nodemon",
   "dev:tsx": "tsx watch src/server.ts",
-  "start": "tsx src/server.ts",
+  "start": "node dist/server.js",
   "test": "vitest run",
   "test:watch": "vitest",
   "build": "tsc"
