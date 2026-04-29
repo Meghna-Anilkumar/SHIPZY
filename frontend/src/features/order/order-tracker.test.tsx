@@ -21,7 +21,7 @@ describe("OrderTracker", () => {
         status: "Preparing",
         createdAt: new Date().toISOString()
       }
-    } as ReturnType<typeof useOrderStatusQuery>);
+    } as unknown as ReturnType<typeof useOrderStatusQuery>);
 
     render(<OrderTracker orderId="order-1" />);
 

@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "description": "Order management backend",
   "main": "dist/server.js",
-  "scripts": {
-    "dev": "nodemon",
-    "dev:tsx": "tsx watch src/server.ts",
-    "start": "tsx src/server.ts",
-    "test": "vitest run",
-    "test:watch": "vitest"
-  },
+ "scripts": {
+  "dev": "nodemon",
+  "dev:tsx": "tsx watch src/server.ts",
+  "start": "tsx src/server.ts",
+  "test": "vitest run",
+  "test:watch": "vitest",
+  "build": "tsc"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
