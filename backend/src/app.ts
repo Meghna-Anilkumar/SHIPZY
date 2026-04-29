@@ -11,6 +11,8 @@ import { createMenuRoutes } from "./routes/menu.routes";
 import { createOrderRoutes } from "./routes/order.routes";
 import { HTTP_STATUS } from "./constants/httpStatus";
 import type { IMenuRepository, IOrderRepository } from "./repositories/interfaces";
+import dotenv from "dotenv";
+dotenv.config();
 
 interface AppDependencies {
   menuRepository?: IMenuRepository;
@@ -19,7 +21,12 @@ interface AppDependencies {
 
 export const createApp = (dependencies: AppDependencies = {}) => {
   const app = express();
-  app.use(cors());
+  app.use(
+    cors({
+      origin: process.env.FRONTEND_URL,
+      credentials: true,
+    })
+  );
   app.use(express.json());
 
   const menuRepository = dependencies.menuRepository ?? new MongoMenuRepository();
